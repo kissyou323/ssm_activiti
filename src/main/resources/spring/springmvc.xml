@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--springmvc启动自动扫描
+    	原来写法：<context:component-scan base-package="com.parkson.erp.*.controller">
+		use-default-filters:禁用到默认规则，只让context:include-filter生效
+	 -->
+    <context:component-scan base-package="com.parkson.erp" use-default-filters="false">
+    	<!-- 只生效标志了@Controller的控制器 -->
+    	<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!-- 注册MVC注解驱动，使之能支持更高级功能 如JSR303校验、JAXA、映射动态请求、声明式事务.... -->
+    <mvc:annotation-driven />
+
+    <!-- 静态资源可访问的设置方式，将springmvc不能处理的请求交给Tomcat -->
+    <mvc:default-servlet-handler/>
+	
+    <!-- 配置视图解析器，可以显式设置，也可以不设置，不设置会依据SpringMVC的默认设置 -->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+</beans>
